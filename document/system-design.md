@@ -229,9 +229,10 @@ t_shopping_cart
 | ---------- | ------- | ------ | -------- | ------- | ---- | ----------- |
 | id         | varchar | 64     | not null |         | P    |             |
 | product_id | varchar | 64     | not null |         | F    |             |
-| price      | decimal | (18,2) | not null |         |      |             |
 | count      | int     | 8      | not null |         |      |             |
 | subtotal   | decimal | (18,2) | not null |         |      |             |
+| sort_num   | int     | 8      | null     |         |      |             |
+| selected   | bool    | 1      | not null |         |      |             |
 
 t_order
 
@@ -286,30 +287,239 @@ t_user_address
 
 Signin or Signup Page
 
-- /signin
-- /signup
+- **/signin**
+
+  - Method: POST
+  - Data Type: JSON
+
+  - Parameters: 
+
+    | Name     | Required | Data Type | Description           |
+    | -------- | -------- | --------- | --------------------- |
+    | account  | required | string    | email/username/mobile |
+    | password | required | string    |                       |
+
+  - Result:
+
+    ```
+    {
+        ret_code: 0,
+        ret_msg: "success",
+        access_token: ""
+    }
+    ```
+
+- **/signup**
+
+  - Method: POST
+  - Data Type: JSON
+
+  - Parameters: 
+
+    | Name     | Required | Data Type | Description                          |
+    | -------- | -------- | --------- | ------------------------------------ |
+    | username | required | string    |                                      |
+    | mobile   | required | string    |                                      |
+    | password | required | string    | 6-10 letters, numbers or characters. |
+    | email    | optional | string    |                                      |
+
+  - Result
+
+    ```
+    {
+        ret_code: 0,
+        ret_msg: "success"
+    }
+    ```
 
 Home Page
 
 - /home/categories
+
+  - Method: GET
+  - Data Type: JSON
+
+  - Parameters: 
+
+  - Result:
+
+    ```json
+    {
+        ret_code: 0,
+        ret_msg: "success"
+        data:{
+        	categories:[{
+            	name: "", 
+        		url: "",
+        		sort_num: 
+        	},
+        	...
+        	]
+        }
+    }
+    ```
+
 - /home/products
+
+  - Method: GET
+  - Data Type: JSON
+
+  - Parameters: 
+
+  - Result:
+
+    ```json
+    {
+        ret_code: 0,
+        ret_msg: "success"
+        data:{
+        	carousel_list:[{
+            	name: "", 
+        		url: "",
+        		sort_num: 
+        	},
+        	...
+        	]，
+        	product_list_arr:[{
+        		id: "",
+        		list_name: "",
+        		list_data:[{
+        			id: "",
+        			name: "",
+        			url:""
+        		},
+        		...
+        		]
+        	},
+        	...
+        	]
+        }
+    }
+    ```
 
 Products list Page
 
 - /categories/{id}/products
+
+  - Method: GET
+  - Data Type: JSON
+
+  - Parameters: 
+
+  - Result:
+
+    ```
+    {
+        ret_code: 0,
+        ret_msg: "success"
+        data:{
+        	product_list:[{
+        		id: "",
+            	name: "", 
+        		url: "",
+        		sort_num: 
+        	},
+        	...
+        	]
+        }
+    }
+    ```
+
 - /search?{params}
+
+  - Method: GET
+  - Data Type: JSON
+
+  - Parameters: 
+
+  - Result:
+
+    ```
+    {
+        ret_code: 0,
+        ret_msg: "success"
+        data:{
+        	product_list:[{
+        		id: "",
+            	name: "", 
+        		url: "",
+        		sort_num: 
+        	},
+        	...
+        	]
+        }
+    }
+    ```
 
 Product Detail Page
 
 - /products/{id}
+
+  - Method: GET
+  - Data Type: JSON
+
+  - Parameters: 
+
+  - Result:
+
+    ```
+    {
+        ret_code: 0,
+        ret_msg: "success"
+        data:{
+        	product_info:{
+        		id: "",
+            	name: "",
+            	desc: "",
+            	price: 
+        	}
+        }
+    }
+    ```
+
 - /products/{id}/desc
+
 - /products/{id}/reviews
+
 - /products/{id}/recommends
 
 Shopping Cart Page
 
 - /shoppingcarts
-- /shoppingcarts/{id}
+
+  - Method: GET
+  - Data Type: JSON
+
+  - Parameters: 
+
+  - Result:
+
+    ```
+    {
+        ret_code: 0,
+        ret_msg: "success"
+        data:{
+        	shopping_cart:{
+        		id: "",
+        		total: ,
+                list:[{
+                    id: "",
+                    url: "",
+                    count: "",
+                    selected: ,
+                    subtotal: ,
+                    sort_num: ,
+                    product_info:{
+                        id: "",
+                        name: "",
+                        price: 
+                    }
+                },
+                ...
+                ]
+        }
+    }
+    ```
 
 User Center Page
 
@@ -341,19 +551,22 @@ Project Directory Structure
 
 ### References
 
-Management Systems
-
-- [Guns](https://github.com/stylefeng/Guns)
-- [spring-boot-plus](https://github.com/geekidea/spring-boot-plus)
-- [hope-boot](https://github.com/hope-for/hope-boot)
-- [BootDo](https://github.com/lcg0124/bootdo)
-
-Mall Systems
-
-- [yii2_fecshop](https://github.com/fecshop/yii2_fecshop)
-- [gpmall](https://github.com/2227324689/gpmall)
-- [mall](https://github.com/macrozheng/mall)
-- [xmall](https://github.com/Exrick/xmall)
-- [xmall-front](https://github.com/Exrick/xmall-front)
-
 - 大型网站系统与Java中间件实践 by 曾宪杰
+
+- Management Systems
+  - [Guns](https://github.com/stylefeng/Guns)
+  - [spring-boot-plus](https://github.com/geekidea/spring-boot-plus)
+  - [hope-boot](https://github.com/hope-for/hope-boot)
+  - [BootDo](https://github.com/lcg0124/bootdo)
+
+- Mall Systems
+  - [yii2_fecshop](https://github.com/fecshop/yii2_fecshop)
+  - [gpmall](https://github.com/2227324689/gpmall)
+  - [mall](https://github.com/macrozheng/mall)
+  - [xmall](https://github.com/Exrick/xmall)
+
+- Frontend
+  - [xmall-front](https://github.com/Exrick/xmall-front)
+  - [ecommerce-netlify](https://github.com/sdras/ecommerce-netlify)
+
+  
